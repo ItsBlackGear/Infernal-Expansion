@@ -9,6 +9,7 @@ public class CommonConfig {
     //Mob Interactions
     final ForgeConfigSpec.BooleanValue piglinFearWarpbeetle;
     final ForgeConfigSpec.BooleanValue piglinFearEmbody;
+    final ForgeConfigSpec.BooleanValue piglinFearDwarf;
     final ForgeConfigSpec.BooleanValue hoglinFearWarpbeetle;
     final ForgeConfigSpec.BooleanValue hoglinFearEmbody;
     final ForgeConfigSpec.BooleanValue spiderAttackWarpbeetle;
@@ -23,36 +24,45 @@ public class CommonConfig {
     final ForgeConfigSpec.BooleanValue ghastAttackEmbody;
     final ForgeConfigSpec.BooleanValue ghastAttackVoline;
     final ForgeConfigSpec.BooleanValue ghastAttackSkeleton;
+    final ForgeConfigSpec.BooleanValue ghastAttackGlowsquito;
+    final ForgeConfigSpec.BooleanValue glowsquitoAttackDwarf;
+    final ForgeConfigSpec.BooleanValue glowsquitoAttackLuminous;
+    final ForgeConfigSpec.BooleanValue dwarfAttackPiglin;
+    final ForgeConfigSpec.BooleanValue dwarfAttackZombiePiglin;
+    final ForgeConfigSpec.BooleanValue dwarfAttackPlayer;
+    final ForgeConfigSpec.BooleanValue blindsightAttackGlowsquito;
+    final ForgeConfigSpec.BooleanValue blindsightAttackPlayer;
+    final ForgeConfigSpec.BooleanValue giantAttackMagmaCube;
+    final ForgeConfigSpec.BooleanValue embodyAttackPiglin;
+    final ForgeConfigSpec.BooleanValue embodyAttackPlayer;
+    final ForgeConfigSpec.BooleanValue volineAttackFireResistance;
+    final ForgeConfigSpec.BooleanValue volineAttackPlayer;
+    final ForgeConfigSpec.BooleanValue volineAttackMagmaCube;
     final ForgeConfigSpec.DoubleValue glowsilkSpeed;
 
-    //Mob Spawning Booleans
-    final ForgeConfigSpec.BooleanValue volineInWastes;
-    final ForgeConfigSpec.BooleanValue shroomloinInCrimson;
-    final ForgeConfigSpec.BooleanValue volineInCrimson;
-    final ForgeConfigSpec.BooleanValue warpbeetleInWarped;
-    final ForgeConfigSpec.BooleanValue giantInDeltas;
-    final ForgeConfigSpec.BooleanValue embodyInSSV;
-    final ForgeConfigSpec.BooleanValue glowsilkInGSC;
-    final ForgeConfigSpec.BooleanValue glowsilkInDeltas;
-    final ForgeConfigSpec.BooleanValue glowsilkInCrimson;
-
-    //Mob Spawn Rates
-    final ForgeConfigSpec.IntValue volineWastesRate;
-    final ForgeConfigSpec.IntValue shroomloinCrimsonRate;
-    final ForgeConfigSpec.IntValue volineCrimsonRate;
-    final ForgeConfigSpec.IntValue warpbeetleWarpedRate;
-    final ForgeConfigSpec.IntValue giantDeltasRate;
-    final ForgeConfigSpec.IntValue embodySSVRate;
-    final ForgeConfigSpec.IntValue glowsilkGSCRate;
-    final ForgeConfigSpec.IntValue glowsilkDeltasRate;
-    final ForgeConfigSpec.IntValue glowsilkCrimsonRate;
+    //Mob Spawnable Biomes
+    final ForgeConfigSpec.ConfigValue<String> volineBiomes;
+    final ForgeConfigSpec.ConfigValue<String> warpbeetleBiomes;
+    final ForgeConfigSpec.ConfigValue<String> shroomloinBiomes;
+    final ForgeConfigSpec.ConfigValue<String> basaltGiantBiomes;
+    final ForgeConfigSpec.ConfigValue<String> embodyBiomes;
+    final ForgeConfigSpec.ConfigValue<String> glowsquitoBiomes;
+    final ForgeConfigSpec.ConfigValue<String> glowsilkMothBiomes;
+    final ForgeConfigSpec.ConfigValue<String> blindsightBiomes;
+    final ForgeConfigSpec.ConfigValue<String> blackstoneDwarfBiomes;
     
     //Bonemeal Behaviour
     final ForgeConfigSpec.DoubleValue shroomlightGrowChance;
     final ForgeConfigSpec.BooleanValue isShroomlightGrowable;
+
+    //Miscellaneous
+    final ForgeConfigSpec.BooleanValue fireChargeExplosion;
+    final ForgeConfigSpec.IntValue jerkyEffectDuration;
+    final ForgeConfigSpec.IntValue jerkyEffectAmplifier;
     
     //Luminous Fungus
     final ForgeConfigSpec.DoubleValue luminousFungusActivateDistance;
+    final ForgeConfigSpec.BooleanValue luminousFungusGivesEffect;
 
     CommonConfig(final ForgeConfigSpec.Builder builder){
         //Mob Interactions
@@ -68,6 +78,11 @@ public class CommonConfig {
                 .translation(InfernalExpansion.MOD_ID + ".config.tooltip.piglinFearEmbody")
                 .define("piglinFearEmbody", true);
 
+        piglinFearDwarf = builder
+            .comment("Determines if Piglins will run away from Blackstone Dwarves")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.piglinFearDwarf")
+            .define("piglinFearDwarf", true);
+
         hoglinFearWarpbeetle = builder
                 .comment("Determines if Hoglins will run away from Warpbeetles")
                 .translation(InfernalExpansion.MOD_ID + ".config.tooltip.hoglinFearWarpbeetle")
@@ -79,7 +94,7 @@ public class CommonConfig {
                 .define("hoglinFearEmbody", true);
 
         spiderAttackWarpbeetle = builder
-                .comment("Determines if Spiders will attack Warpbeetles")
+                .comment("Determines if Spiders and Warpbeetles will fight")
                 .translation(InfernalExpansion.MOD_ID + ".config.tooltip.spiderAttackWarpbeetle")
                 .define("spiderAttackWarpbeetle", true);
 
@@ -138,113 +153,133 @@ public class CommonConfig {
                 .translation(InfernalExpansion.MOD_ID + ".config.tooltip.ghastAttackSkeleton")
                 .define("ghastAttackSkeleton", false);
 
+        ghastAttackGlowsquito = builder
+            .comment("Determines if Ghasts will shoot at Glowsquitos")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.ghastAttackGlowsquito")
+            .define("ghastAttackGlowsquito", false);
+
+        glowsquitoAttackDwarf = builder
+            .comment("Determines if Glowsquitos and Blackstone Dwarves will fight")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.glowsquitoAttackDwarf")
+            .define("glowsquitoAttackDwarf", true);
+
+        glowsquitoAttackLuminous = builder
+            .comment("Determines if Glowsquitos will attack Entities with the Luminous Effect")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.glowsquitoAttackLuminous")
+            .define("glowsquitoAttackLuminous", true);
+
+        dwarfAttackPiglin = builder
+            .comment("Determines if Blackstone Dwarves will attack Piglins")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.dwarfAttackPiglin")
+            .define("dwarfAttackPiglin", true);
+
+        dwarfAttackZombiePiglin = builder
+            .comment("Determines if Blackstone Dwarves will attack Zombified Piglins")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.dwarfAttackZombiePiglin")
+            .define("dwarfAttackZombiePiglin", true);
+
+        dwarfAttackPlayer = builder
+            .comment("Determines if Blackstone Dwarves will attack Players")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.dwarfAttackPlayer")
+            .define("dwarfAttackPlayer", true);
+
+        blindsightAttackGlowsquito = builder
+            .comment("Determines if Blindsights will attack Glowsquitos")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.blindsightAttackGlowsquito")
+            .define("blindsightAttackGlowsquito", true);
+
+        blindsightAttackPlayer = builder
+            .comment("Determines if Blindsights will attack Players")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.blindsightAttackPlayer")
+            .define("blindsightAttackPlayer", true);
+
+        giantAttackMagmaCube = builder
+            .comment("Determines if Basalt Giants will attack Magma Cubes")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.giantAttackMagmaCube")
+            .define("giantAttackMagmaCube", true);
+
+        embodyAttackPiglin = builder
+            .comment("Determines if Embodies will attack Piglins")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.embodyAttackPiglin")
+            .define("embodyAttackPiglin", true);
+
+        embodyAttackPlayer = builder
+            .comment("Determines if Embodies will attack Players")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.embodyAttackPlayer")
+            .define("embodyAttackPlayer", true);
+
+        volineAttackFireResistance = builder
+            .comment("Determines if Voline will attack Entities with Fire Resistance")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.volineAttackFireResistance")
+            .define("volineAttackFireResistance", true);
+
+        volineAttackPlayer = builder
+            .comment("Determines if Voline will attack Players")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.volineAttackPlayer")
+            .define("volineAttackPlayer", true);
+
+        volineAttackMagmaCube = builder
+            .comment("Determines if Voline will attack small Magma Cubes")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.volineAttackMagmaCube")
+            .define("volineAttackMagmaCube", true);
+
         glowsilkSpeed = builder
-			    .comment("Determines the speed at which Glowsilk Moths fly")
-			    .translation(InfernalExpansion.MOD_ID + ".config.tooltip.glowsilkSpeed")
-			    .defineInRange("glowsilkSpeed", 3.0D, 0.0D, Double.MAX_VALUE);
+            .comment("Determines the speed at which Glowsilk Moths fly")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.glowsilkSpeed")
+            .defineInRange("glowsilkSpeed", 1.3D, 0.0D, Double.MAX_VALUE);
 
         builder.pop();
 
         //Mob Spawning
         builder.push("Mob Spawning");
 
-        //Spawn Booleans
-        builder.push("Toggle Spawns");
+        //Spawnable biomes
+        builder.push("Spawnable Biomes");
 
-        volineInWastes = builder
-                .comment("Determines if Volines will spawn in Nether Wastes")
-                .translation(InfernalExpansion.MOD_ID + ".config.tooltip.volineWastes.enable")
-                .define("volineInWastes", true);
+        volineBiomes = builder
+            .comment("Determines what biomes Volines will spawn in")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.voline.biomes")
+            .define("volineBiomes", "minecraft:nether_wastes, minecraft:crimson_forest");
 
-        shroomloinInCrimson = builder
-                .comment("Determines if Shroomloins will spawn in the Crimson Forests")
-                .translation(InfernalExpansion.MOD_ID + ".config.tooltip.shroomloinCrimson.enable")
-                .define("shroomloinInCrimson", true);
+        warpbeetleBiomes = builder
+            .comment("Determines what biomes Warpbeetles will spawn in")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.warpbeetle.biomes")
+            .define("warpbeetleBiomes", "minecraft:warped_forest");
 
-        volineInCrimson = builder
-                .comment("Determines if Volines will spawn in Crimson Forests")
-                .translation(InfernalExpansion.MOD_ID + ".config.tooltip.volineCrimson.enable")
-                .define("volineInCrimson", true);
+        shroomloinBiomes = builder
+            .comment("Determines what biomes Shroomloins will spawn in")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.shroomloin.biomes")
+            .define("shroomloinBiomes", "minecraft:crimson_forest");
 
-        warpbeetleInWarped = builder
-                .comment("Determines if Warpbeetles will spawn in Warped Forests")
-                .translation(InfernalExpansion.MOD_ID + ".config.tooltip.warpbeetleWarped.enable")
-                .define("warpbeetleInWarped", true);
+        basaltGiantBiomes = builder
+            .comment("Determines what biomes Basalt Giants will spawn in")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.basalt_giant.biomes")
+            .define("basaltGiantBiomes", "minecraft:basalt_deltas, infernalexp:delta_shores");
 
-        giantInDeltas = builder
-                .comment("Determines if Basalt Giants will spawn in Basalt Deltas")
-                .translation(InfernalExpansion.MOD_ID + ".config.tooltip.giantDeltas.enable")
-                .define("giantInDeltas", true);
+        embodyBiomes = builder
+            .comment("Determines what biomes Embodies will spawn in")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.embody.biomes")
+            .define("embodyBiomes", "minecraft:soul_sand_valley");
 
-        embodyInSSV = builder
-                .comment("Determines if Embodies will spawn in the Soul Sand Valleys")
-                .translation(InfernalExpansion.MOD_ID + ".config.tooltip.embodySSV.enable")
-                .define("embodyInSSV", true);
+        glowsquitoBiomes = builder
+            .comment("Determines what biomes Glowsquitos will spawn in")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.glowsquito.biomes")
+            .define("glowsquitoBiomes", "infernalexp:glowstone_canyon");
 
-        glowsilkInGSC = builder
-                .comment("Determines if Glowsilk Moths will spawn in Glowstone Canyons")
-                .translation(InfernalExpansion.MOD_ID + ".config.tooltip.glowsilkGSC.enable")
-                .define("glowsilkInGSC", true);
+        glowsilkMothBiomes = builder
+            .comment("Determines what biomes Glowsilk Moths will spawn in")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.glowsilk_moth.biomes")
+            .define("glowsilkMothBiomes", "minecraft:crimson_forest, minecraft:basalt_deltas, infernalexp:glowstone_canyon");
 
-        glowsilkInDeltas = builder
-                .comment("Determines if Glowsilk Moths will spawn in Basalt Deltas")
-                .translation(InfernalExpansion.MOD_ID + ".config.tooltip.glowsilkDeltas.enable")
-                .define("glowsilkInDeltas", true);
+        blindsightBiomes = builder
+            .comment("Determines what biomes Blindsights will spawn in")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.blindsight.biomes")
+            .define("blindsightBiomes", "infernalexp:glowstone_canyon");
 
-        glowsilkInCrimson = builder
-                .comment("Determines if Glowsilk Moths will spawn in Crimson Forests")
-                .translation(InfernalExpansion.MOD_ID + ".config.tooltip.glowsilkCrimson.enable")
-                .define("glowsilkCrimson", true);
-
-        builder.pop();
-
-      //Spawn Rates
-        builder.push("Spawn Rates");
-
-        volineWastesRate = builder
-                .comment("Determines the rate at which Volines spawn in the Nether Wastes")
-                .translation(InfernalExpansion.MOD_ID + ".config.tooltip.volineWastes.spawnrate")
-                .defineInRange("volineWastesRate", 50, 0, Integer.MAX_VALUE);
-
-        shroomloinCrimsonRate = builder
-                .comment("Determines the rate at which Shroomloins spawn in the Crimson Forests")
-                .translation(InfernalExpansion.MOD_ID + ".config.tooltip.shroomloinCrimson.spawnrate")
-                .defineInRange("shroomloinCrimsonRate", 5, 0, Integer.MAX_VALUE);
-
-        volineCrimsonRate = builder
-                .comment("Determines the rate at which Volines spawn in the Crimson Forests")
-                .translation(InfernalExpansion.MOD_ID + ".config.tooltip.volineCrimson.spawnrate")
-                .defineInRange("volineCrimsonRate", 1, 0, Integer.MAX_VALUE);
-
-        warpbeetleWarpedRate = builder
-            .comment("Determines the rate at which Warpbeetles spawn in the Warped Forests")
-            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.warpbeetleWarped.spawnrate")
-            .defineInRange("warpbeetleWarpedRate", 100, 0, Integer.MAX_VALUE);
-
-        giantDeltasRate = builder
-                .comment("Determines the rate at which Basalt Giants spawn in the Basalt Deltas")
-                .translation(InfernalExpansion.MOD_ID + ".config.tooltip.giantDeltas.spawnrate")
-                .defineInRange("giantDeltasRate", 30, 0, Integer.MAX_VALUE);
-
-        embodySSVRate = builder
-                .comment("Determines the rate at which Embodies spawn in the Soul Sand Valleys")
-                .translation(InfernalExpansion.MOD_ID + ".config.tooltip.embodySSV.spawnrate")
-                .defineInRange("embodySSVRate", 60, 0, Integer.MAX_VALUE);
-
-        glowsilkGSCRate = builder
-                .comment("Determines the rate at which Glowsilk Moths spawn in the Glowstone Canyon")
-                .translation(InfernalExpansion.MOD_ID + ".config.tooltip.glowsilkGSC.spawnrate")
-                .defineInRange("glowsilkGSCRate", 1, 0, Integer.MAX_VALUE);
-
-        glowsilkDeltasRate = builder
-                .comment("Determines the rate at which Glowsilk Moths spawn in the Basalt Deltas")
-                .translation(InfernalExpansion.MOD_ID + ".config.tooltip.glowsilkDeltas.spawnrate")
-                .defineInRange("glowsilkDeltasRate", 5, 0, Integer.MAX_VALUE);
-
-        glowsilkCrimsonRate = builder
-                .comment("Determines the rate at which Glowsilk Moths spawn in the Crimson Forests")
-                .translation(InfernalExpansion.MOD_ID + ".config.tooltip.glowsilkCrimson.spawnrate")
-                .defineInRange("glowsilkCrimsonRate", 5, 0, Integer.MAX_VALUE);
+        blackstoneDwarfBiomes = builder
+            .comment("Determines what biomes Blackstone Dwarfs will spawn in")
+            .translation(InfernalExpansion.MOD_ID + ".config.tooltip.blackstone_dwarf.biomes")
+            .define("blackstoneDwarfBiomes", "infernalexp:glowstone_canyon");
 
         builder.pop();
         
@@ -264,6 +299,23 @@ public class CommonConfig {
                 .defineInRange("shroomlightGrowChance", 1.0D, 0.0D, 1.0D);
 
         builder.pop();
+
+        builder.push("Miscellaneous");
+
+        fireChargeExplosion = builder
+            .comment("Determines if thrown fire charges will explode on impact")
+            .translation(InfernalExpansion.MOD_ID + ".config.fireChargeExplosion")
+            .define("fireChargeExplosion", true);
+
+        jerkyEffectDuration = builder
+            .comment("Determines the duration in seconds of the effect that Cured Jerky gives")
+            .translation(InfernalExpansion.MOD_ID + ".config.jerkyEffectDuration")
+            .defineInRange("jerkyEffectDuration", 8, 0, Integer.MAX_VALUE);
+
+        jerkyEffectAmplifier = builder
+            .comment("Determines the amplifier of the effect that Cured Jerky gives")
+            .translation(InfernalExpansion.MOD_ID + ".config.jerkyEffectAmplifier")
+            .defineInRange("jerkyEffectAmplifier", 1, 0, 2);
         
         builder.push("Luminous Fungus");
         
@@ -271,6 +323,11 @@ public class CommonConfig {
                 .comment("Determines the distance an entity has to be from a luminous fungus for it to activate (larger values have performance impact)")
                 .translation(InfernalExpansion.MOD_ID + ".config.luminousFungusActivateDistance")
                 .defineInRange("luminousFungusActivateDistance", 4.0D, 0.0D, Double.MAX_VALUE);
+
+        luminousFungusGivesEffect = builder
+            .comment("Determines whether Luminous Fungus gives the Luminance effect on collision with an entity")
+            .translation(InfernalExpansion.MOD_ID + ".config.luminousFungusActivateDistance")
+            .define("luminousFungusGivesEffect", true);
 
         builder.pop();
     }

@@ -1,11 +1,14 @@
 package com.nekomaster1000.infernalexp.config.gui.screens;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+
 import com.nekomaster1000.infernalexp.InfernalExpansion;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.TranslationTextComponent;
+
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -23,7 +26,7 @@ public class ConfigScreen extends Screen {
 	protected void init() {
 		addButton(new Button(width / 2 - 155, height / 6, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslationTextComponent(InfernalExpansion.MOD_ID + ".config.button.mobInteractions"), button -> Minecraft.getInstance().displayGuiScreen(new MobInteractionsScreen(this))));
 		addButton(new Button(width / 2 + 5, height / 6, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslationTextComponent(InfernalExpansion.MOD_ID + ".config.button.mobSpawning"), button -> Minecraft.getInstance().displayGuiScreen(new MobSpawningScreen(this))));
-		addButton(new Button(width / 2 - 155, height / 6 + 24, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslationTextComponent(InfernalExpansion.MOD_ID + ".config.button.floraBehaviour"), button -> Minecraft.getInstance().displayGuiScreen(new FloraBehaviourScreen(this))));
+		addButton(new Button(width / 2 - 155, height / 6 + 24, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslationTextComponent(InfernalExpansion.MOD_ID + ".config.button.miscellaneous"), button -> Minecraft.getInstance().displayGuiScreen(new MiscellaneousScreen(this))));
 		addButton(new Button(width / 2 + 5, height / 6 + 24, BUTTON_WIDTH, BUTTON_HEIGHT, new TranslationTextComponent(InfernalExpansion.MOD_ID + ".config.button.clientConfig"), button -> Minecraft.getInstance().displayGuiScreen(new ClientConfigScreen(this))));
 
 		addButton(new Button((width - 200) / 2, height - 26, 200, BUTTON_HEIGHT, new TranslationTextComponent("gui.done"), button -> closeScreen()));

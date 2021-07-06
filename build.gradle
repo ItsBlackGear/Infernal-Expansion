@@ -16,8 +16,8 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = 'forge-1.0.0'
-group = 'com.nekomaster1000.Infernal' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+version = '2.0.0-beta.5'
+group = 'com.nekomaster1000.infernalexp' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'infernal-expansion'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
@@ -146,13 +146,6 @@ jar {
         ])
     }
 }
-
-/*
-dependencies {
-
-    implementation fg.deobf('software.bernie.geckolib:forge-1.16.3-geckolib:2.1.2')
-}
-*/
 
 // Example configuration to allow publishing using the maven-publish task
 // This is the preferred method to reobfuscate your jar file

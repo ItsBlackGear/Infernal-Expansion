@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.NonNullSupplier;
 import net.minecraftforge.fml.RegistryObject;
@@ -25,14 +26,14 @@ public class ModSpawnEggItem extends SpawnEggItem {
     protected static final List<ModSpawnEggItem> UNADDED_EGGS = new ArrayList<>();
     private final Lazy<? extends EntityType<?>> entityTypeSupplier;
 
-    public ModSpawnEggItem(final NonNullSupplier<? extends EntityType<?>> entityTypeSupplier, final int p_i48465_2_, final int p_i48465_3_, final Properties p_i48465_4_) {
-        super(null, p_i48465_2_, p_i48465_3_, p_i48465_4_);
+    public ModSpawnEggItem(final NonNullSupplier<? extends EntityType<?>> entityTypeSupplier, final int primaryColor, final int secondaryColor, final Properties properties) {
+        super(null, primaryColor, secondaryColor, properties);
         this.entityTypeSupplier = Lazy.of(entityTypeSupplier::get);
         UNADDED_EGGS.add(this);
     }
 
-    public ModSpawnEggItem(final RegistryObject<? extends EntityType<?>> entityTypeSupplier, final int p_i48465_2_, final int p_i48465_3_, final Properties p_i48465_4_) {
-        super(null, p_i48465_2_, p_i48465_3_, p_i48465_4_);
+    public ModSpawnEggItem(final RegistryObject<? extends EntityType<?>> entityTypeSupplier, final int primaryColor, final int secondaryColor, final Properties properties) {
+        super(null, primaryColor, secondaryColor, properties);
         this.entityTypeSupplier = Lazy.of(entityTypeSupplier);
         UNADDED_EGGS.add(this);
     }
@@ -44,7 +45,6 @@ public class ModSpawnEggItem extends SpawnEggItem {
      * but supplier based ones won't have had their EntityTypes created yet.
      */
     public static void initUnaddedEggs() {
-        final Map<EntityType<?>, SpawnEggItem> EGGS = ObfuscationReflectionHelper.getPrivateValue(SpawnEggItem.class, null, "field_195987_b");
         DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior() {
             public ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
                 Direction direction = source.getBlockState().get(DispenserBlock.FACING);
@@ -55,7 +55,7 @@ public class ModSpawnEggItem extends SpawnEggItem {
             }
         };
         for (final SpawnEggItem egg : UNADDED_EGGS) {
-            EGGS.put(egg.getType(null), egg);
+            SpawnEggItem.EGGS.put(egg.getType(null), egg);
             DispenserBlock.registerDispenseBehavior(egg, defaultDispenseItemBehavior);
             // ItemColors for each spawn egg don't need to be registered because this method is called before ItemColors is created
         }

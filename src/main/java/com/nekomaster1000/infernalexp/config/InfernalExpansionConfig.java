@@ -1,5 +1,8 @@
 package com.nekomaster1000.infernalexp.config;
 
+import javax.annotation.Nonnull;
+import java.util.Arrays;
+
 public final class InfernalExpansionConfig {
 
     //Client
@@ -68,6 +71,7 @@ public final class InfernalExpansionConfig {
     public enum MobInteractions{
         PIGLIN_FEAR_WARPBEETLE("piglinFearWarpbeetle", false),
         PIGLIN_FEAR_EMBODY("piglinFearEmbody", false),
+        PIGLIN_FEAR_DWARF("piglinFearDwarf", false),
         HOGLIN_FEAR_WARPBEETLE("hoglinFearWarpbeetle", false),
         HOGLIN_FEAR_EMBODY("hoglinFearEmbody", false),
         SPIDER_ATTACK_WARPBEETLE("spiderAttackWarpbeetle", false),
@@ -82,6 +86,20 @@ public final class InfernalExpansionConfig {
         GHAST_ATTACK_EMBODY("ghastAttackEmbody", false),
         GHAST_ATTACK_VOLINE("ghastAttackVoline", false),
         GHAST_ATTACK_SKELETON("ghastAttackSkeleton", false),
+        GHAST_ATTACK_GLOWSQUITO("ghastAttackGlowsquito", false),
+        GLOWSQUITO_ATTACK_DWARF("glowsquitoAttackDwarf", false),
+        GLOWSQUITO_ATTACK_LUMINOUS("glowsquitoAttackLuminous", false),
+        DWARF_ATTACK_PIGLIN("dwarfAttackPiglin", false),
+        DWARF_ATTACK_ZOMBIE_PIGLIN("dwarfAttackZombiePiglin", false),
+        DWARF_ATTACK_PLAYER("dwarfAttackPlayer", false),
+        BLINDSIGHT_ATTACK_GLOWSQUITO("blindsightAttackGlowsquito", false),
+        BLINDSIGHT_ATTACK_PLAYER("blindsightAttackPlayer", false),
+        GIANT_ATTACK_MAGMA_CUBE("giantAttackMagmaCube", false),
+        EMBODY_ATTACK_PIGLIN("embodyAttackPiglin", false),
+        EMBODY_ATTACK_PLAYER("embodyAttackPlayer", false),
+        VOLINE_ATTACK_FIRE_RESISTANCE("volineAttackFireResistance", false),
+        VOLINE_ATTACK_PLAYER("volineAttackPlayer", false),
+        VOLINE_ATTACK_MAGMA_CUBE("volineAttackMagmaCube", false),
         GLOWSILK_SPEED("glowsilkSpeed", true);
 
         private final String translationName;
@@ -109,65 +127,74 @@ public final class InfernalExpansionConfig {
         }
 
         public double getDouble() {
-        	return doubleValue;
-		}
+            return doubleValue;
+        }
 
-		public void setDouble(double value) {
-        	this.doubleValue = value;
-		}
+        public void setDouble(double value) {
+            this.doubleValue = value;
+        }
 
-		public boolean isSlider() {
-			return isSlider;
-		}
+        public boolean isSlider() {
+            return isSlider;
+        }
     }
 
-    //Mob Spawning
     public enum MobSpawning {
-        VOLINE_WASTES("volineWastes"),
-        SHROOMLOIN_CRIMSON("shroomloinCrimson"),
-        VOLINE_CRIMSON("volineCrimson"),
-        WARPBEETLE_WARPED("warpbeetleWarped"),
-        GIANT_DELTAS("giantDeltas"),
-        EMBODY_SSV("embodySSV"),
-        GLOWSILK_GSC("glowsilkGSC"),
-        GLOWSILK_DELTAS("glowsilkDeltas"),
-        GLOWSILK_CRIMSON("glowsilkCrimson");
+        VOLINE("voline"),
+        WARPBEETLE("warpbeetle"),
+        SHROOMLOIN("shroomloin"),
+        BASALT_GIANT("basalt_giant"),
+        EMBODY("embody"),
+        GLOWSQUITO("glowsquito"),
+        GLOWSILK_MOTH("glowsilk_moth"),
+        BLINDSIGHT("blindsight"),
+        BLACKSTONE_DWARF("blackstone_dwarf");
 
         private final String translationName;
-        private boolean enabled;
-        private int spawnrate;
+        private String spawnableBiomes;
 
         MobSpawning(String translationName) {
             this.translationName = translationName;
-            this.enabled = false;
-            this.spawnrate = 0;
+            this.spawnableBiomes = "";
         }
 
         public String getTranslationName() {
             return translationName;
         }
 
-        public boolean isEnabled() {
-            return enabled;
+        public void setSpawnableBiomes(String spawnableBiomes) {
+            this.spawnableBiomes = spawnableBiomes;
         }
 
-        public void setEnabled(boolean enabled) {
-            this.enabled = enabled;
+        public String getSpawnableBiomes() {
+            return spawnableBiomes;
         }
 
-        public int getSpawnrate() {
-            return spawnrate;
+        /**
+         * @param name name of the enum constant to get
+         * @return the enum constant
+         */
+        public static MobSpawning getByName(@Nonnull String name) {
+            return MobSpawning.valueOf(name.toUpperCase());
         }
 
-        public void setSpawnrate(int spawnrate) {
-            this.spawnrate = spawnrate;
+        /**
+         * @param name name of the enum constant to check if it exists in the enum
+         * @return true if enum contains enum constant
+         */
+        public static boolean contains(@Nonnull String name) {
+            return Arrays.stream(MobSpawning.values()).anyMatch(entity -> entity.getTranslationName().equals(name));
         }
     }
 
-    public enum FloraBehaviour {
+    public enum Miscellaneous {
         SHROOMLIGHT_GROWABLE("isShroomlightGrowable", false, 0, 0, 0),
         SHROOMLIGHT_GROW_CHANCE("shroomlightGrowChance", true, 0, 1 , 0.01f),
-        LUMINOUS_FUNGUS_ACTIVATE_DISTANCE("luminousFungusActivateDistance", true, 0, 100, 1);
+        LUMINOUS_FUNGUS_ACTIVATE_DISTANCE("luminousFungusActivateDistance", true, 0, 100, 1),
+        FIRE_CHARGE_EXPLOSION("fireChargeExplosion", false, 0, 1, 1),
+        JERKY_EFFECT_DURATION("jerkyEffectDuration", true, 1, 120, 1),
+        JERKY_EFFECT_AMPLIFIER("jerkyEffectAmplifier", true, 0, 2, 1),
+        LUMINOUS_FUNGUS_GIVES_EFFECT("luminousFungusGivesEffect", false, 0, 0, 0);
 
         private final String translationName;
         private final boolean isSlider;
@@ -176,7 +203,7 @@ public final class InfernalExpansionConfig {
         private final float stepSize;
         private double value;
 
-        FloraBehaviour(String translationName, boolean isSlider, double minValue, double maxValue, float stepSize) {
+        Miscellaneous(String translationName, boolean isSlider, double minValue, double maxValue, float stepSize) {
             this.translationName = translationName;
             this.isSlider = isSlider;
             this.minValue = minValue;
@@ -211,6 +238,10 @@ public final class InfernalExpansionConfig {
 
         public double getDouble() {
             return value;
+        }
+
+        public int getInt() {
+            return (int) value;
         }
 
         public boolean getBool() {

@@ -4,13 +4,19 @@ import com.nekomaster1000.infernalexp.InfernalExpansion;
 import com.nekomaster1000.infernalexp.blocks.HorizontalBushBlock;
 import com.nekomaster1000.infernalexp.config.ConfigHelper;
 import com.nekomaster1000.infernalexp.config.ConfigHolder;
-import com.nekomaster1000.infernalexp.config.InfernalExpansionConfig.FloraBehaviour;
+import com.nekomaster1000.infernalexp.config.InfernalExpansionConfig.Miscellaneous;
+import com.nekomaster1000.infernalexp.data.SpawnrateManager;
 import com.nekomaster1000.infernalexp.data.VolineEatTable;
 import com.nekomaster1000.infernalexp.entities.ShroomloinEntity;
+import com.nekomaster1000.infernalexp.entities.ThrowableFireChargeEntity;
 import com.nekomaster1000.infernalexp.entities.ThrowableMagmaCreamEntity;
 import com.nekomaster1000.infernalexp.init.IEBlocks;
 import com.nekomaster1000.infernalexp.init.IEEffects;
+import com.nekomaster1000.infernalexp.init.IEItems;
 import com.nekomaster1000.infernalexp.init.IEParticleTypes;
+import com.nekomaster1000.infernalexp.init.IESoundEvents;
+import com.nekomaster1000.infernalexp.init.IETags;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -21,20 +27,25 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.UseAction;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.state.properties.AttachFace;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+
 import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.PotionColorCalculationEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
@@ -52,9 +63,9 @@ import java.util.Map;
 @Mod.EventBusSubscriber(modid = InfernalExpansion.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MiscEvents {
 
-//    Called When Config is Changed
+    //    Called When Config is Changed
     @SubscribeEvent
-    public static void onModConfigEvent(final ModConfig.ModConfigEvent event){
+    public static void onModConfigEvent(final ModConfig.ModConfigEvent event) {
         final ModConfig config = event.getConfig();
         //Recalculates what the configs should be when changed
         if (config.getSpec() == ConfigHolder.CLIENT_SPEC) {
@@ -66,21 +77,16 @@ public class MiscEvents {
 
     //Blocks being broken
     @SubscribeEvent
-    public void onBlockBreak(BlockEvent.BreakEvent event){
-        if(event.getState().equals(Blocks.CRIMSON_FUNGUS.getDefaultState())
-                || event.getState().equals(Blocks.CRIMSON_ROOTS.getDefaultState())
-                || event.getState().equals(Blocks.CRIMSON_STEM.getDefaultState())
-                || event.getState().equals(Blocks.STRIPPED_CRIMSON_STEM.getDefaultState())
-                || event.getState().equals(Blocks.WEEPING_VINES.getDefaultState())
-                || event.getState().equals(Blocks.WEEPING_VINES_PLANT.getDefaultState())
-                || event.getState().equals(Blocks.NETHER_WART_BLOCK.getDefaultState())) {
+    public void onBlockBreak(BlockEvent.BreakEvent event) {
+        if (event.getState().isIn(IETags.Blocks.GUARDED_BY_SHROOMLOIN)) {
+            if (event.getPlayer().isCreative()) {
+                return;
+            }
             List<?> list = event.getPlayer().world.getEntitiesWithinAABB(ShroomloinEntity.class,
-                    event.getPlayer().getBoundingBox().grow(32.0D));
-            for(int j = 0; j < list.size(); j++)
-            {
-                Entity entity = (Entity)list.get(j);
-                if(entity instanceof ShroomloinEntity)
-                {
+                event.getPlayer().getBoundingBox().grow(32.0D));
+            for (int j = 0; j < list.size(); j++) {
+                Entity entity = (Entity) list.get(j);
+                if (entity instanceof ShroomloinEntity) {
                     ShroomloinEntity shroomloinEntity = (ShroomloinEntity) entity;
                     shroomloinEntity.becomeAngryAt(event.getPlayer());
                 }
@@ -111,6 +117,18 @@ public class MiscEvents {
                 ForgeEventFactory.onBlockPlace(player, BlockSnapshot.create(world.getDimensionKey(), world, pos), face);
             }
         }
+
+        if (heldItemStack.getItem() == Items.GLOWSTONE_DUST) {
+            if (world.getBlockState(pos).getBlock() == IEBlocks.DIMSTONE.get()) {
+                player.swingArm(event.getHand());
+                world.playSound(null, event.getPos(), IESoundEvents.GLOWSTONE_RECHARGE.get(), SoundCategory.BLOCKS, 1.0F, (float) (0.75F + event.getWorld().getRandom().nextDouble() / 2));
+                world.setBlockState(pos, Blocks.GLOWSTONE.getDefaultState());
+            } else if (world.getBlockState(pos).getBlock() == IEBlocks.DULLSTONE.get()) {
+                player.swingArm(event.getHand());
+                world.playSound(null, event.getPos(), IESoundEvents.GLOWSTONE_RECHARGE.get(), SoundCategory.BLOCKS, 1.0F, (float) (0.5F + event.getWorld().getRandom().nextDouble() / 3));
+                world.setBlockState(pos, IEBlocks.DIMSTONE.get().getDefaultState());
+            }
+        }
     }
 
     @SubscribeEvent
@@ -127,6 +145,21 @@ public class MiscEvents {
                 throwableMagmaCreamEntity.setItem(heldItemStack);
 				throwableMagmaCreamEntity.setDirectionAndMovement(player, player.rotationPitch, player.rotationYaw, -20, 0.5f, 1);
 				world.addEntity(throwableMagmaCreamEntity);
+                world.playSound(null, event.getPos(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            }
+
+            player.addStat(Stats.ITEM_USED.get(heldItemStack.getItem()));
+
+            if (!player.abilities.isCreativeMode) {
+                heldItemStack.shrink(1);
+            }
+        } else if (heldItemStack.getItem() == Items.FIRE_CHARGE) {
+            player.swingArm(event.getHand());
+
+            if (!world.isRemote) {
+                ThrowableFireChargeEntity throwableFireChargeEntity = new ThrowableFireChargeEntity(world, player, player.getLookVec().getX(), player.getLookVec().getY(), player.getLookVec().getZ());
+                world.addEntity(throwableFireChargeEntity);
+                world.playSound(null, event.getPos(), SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.BLOCKS, 1.0F, 1.0F);
             }
 
             player.addStat(Stats.ITEM_USED.get(heldItemStack.getItem()));
@@ -142,11 +175,11 @@ public class MiscEvents {
         Block block = event.getBlock().getBlock();
         World world = event.getWorld();
         BlockPos pos = event.getPos();
-        if (block == Blocks.SHROOMLIGHT && FloraBehaviour.SHROOMLIGHT_GROWABLE.getBool()) {
+        if (block == Blocks.SHROOMLIGHT && Miscellaneous.SHROOMLIGHT_GROWABLE.getBool()) {
             pos = pos.down();
             if (world.isAirBlock(pos)) {
                 event.setResult(Event.Result.ALLOW);
-                if (world.getRandom().nextDouble() < FloraBehaviour.SHROOMLIGHT_GROW_CHANCE.getDouble() && !world.isRemote()) {
+                if (world.getRandom().nextDouble() < Miscellaneous.SHROOMLIGHT_GROW_CHANCE.getDouble() && !world.isRemote()) {
                     world.setBlockState(pos, IEBlocks.SHROOMLIGHT_FUNGUS.get().getDefaultState().with(HorizontalBushBlock.FACE, AttachFace.CEILING), 3);
                 }
             }
@@ -193,6 +226,16 @@ public class MiscEvents {
     }
 
     @SubscribeEvent
+    public void onLivingFinishUse(LivingEntityUseItemEvent.Finish event) {
+        ItemStack item = event.getItem();
+        LivingEntity entity = (LivingEntity) event.getEntity();
+
+        if (item.getItem() == IEItems.CURED_JERKY.get() && item.getUseAction() == UseAction.EAT) {
+            entity.addPotionEffect(new EffectInstance(Effects.SPEED, 20 * Miscellaneous.JERKY_EFFECT_DURATION.getInt(), Miscellaneous.JERKY_EFFECT_AMPLIFIER.getInt()));
+        }
+    }
+
+    @SubscribeEvent
     public void onEntityJoin(EntityJoinWorldEvent event) {
         if (event.getEntity() instanceof AreaEffectCloudEntity) {
             for (EffectInstance effect : ((AreaEffectCloudEntity) event.getEntity()).potion.getEffects()) {
@@ -222,11 +265,15 @@ public class MiscEvents {
     }
 
     private static VolineEatTable volineEatTable;
+    private static SpawnrateManager spawnrateManager;
 
     @SubscribeEvent
     public void onResourceReload(AddReloadListenerEvent event) {
         volineEatTable = new VolineEatTable();
+        spawnrateManager = new SpawnrateManager();
+
         event.addListener(volineEatTable);
+        spawnrateManager.loadResources();
     }
 
     public static Map<Item, Map<Item, Integer>> getVolineEatTable() {
@@ -237,4 +284,11 @@ public class MiscEvents {
         return volineEatTable.getVolineEatTable();
     }
 
+    public static Map<String, Map<String, SpawnrateManager.SpawnInfo>> getSpawnrateManager() {
+        if (spawnrateManager == null) {
+            spawnrateManager = new SpawnrateManager();
+        }
+
+        return spawnrateManager.getSpawnrates();
+    }
 }

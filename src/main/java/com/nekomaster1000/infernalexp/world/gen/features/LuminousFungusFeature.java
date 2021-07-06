@@ -3,6 +3,7 @@ package com.nekomaster1000.infernalexp.world.gen.features;
 import java.util.Random;
 
 import com.mojang.serialization.Codec;
+
 import com.nekomaster1000.infernalexp.blocks.LuminousFungusBlock;
 import com.nekomaster1000.infernalexp.init.IEBlocks;
 
@@ -49,8 +50,9 @@ public class LuminousFungusFeature extends Feature<NoFeatureConfig> {
             }
 
             // If we have placed the max amount of luminous fungus, then return
-            if (i >= amount)
+            if (i >= amount) {
                 return true;
+            }
         }
 
         return false;

@@ -2,7 +2,6 @@ package com.nekomaster1000.infernalexp.entities;
 
 import com.nekomaster1000.infernalexp.config.InfernalExpansionConfig;
 import com.nekomaster1000.infernalexp.init.IESoundEvents;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
@@ -26,7 +25,7 @@ import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.monster.MagmaCubeEntity;
 import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
@@ -66,7 +65,6 @@ public class BasaltGiantEntity extends CreatureEntity implements IEntityAddition
 
 	public BasaltGiantEntity(EntityType<? extends BasaltGiantEntity> type, World worldIn) {
 		super(type, worldIn);
-
 		this.stepHeight = 2.0f;
 	}
 
@@ -197,7 +195,7 @@ public class BasaltGiantEntity extends CreatureEntity implements IEntityAddition
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
-		if (source.getImmediateSource() instanceof ArrowEntity) {
+		if (source.getImmediateSource() instanceof AbstractArrowEntity) {
 			return false;
 		}
 		return super.attackEntityFrom(source, amount);
@@ -220,8 +218,9 @@ public class BasaltGiantEntity extends CreatureEntity implements IEntityAddition
 		if (InfernalExpansionConfig.MobInteractions.SKELETON_ATTACK_GIANT.getBoolean()) {
 			this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, SkeletonEntity.class, true, false));
 		}
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, MagmaCubeEntity.class, true, false));
-
+		if (InfernalExpansionConfig.MobInteractions.GIANT_ATTACK_MAGMA_CUBE.getBoolean()) {
+            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, MagmaCubeEntity.class, true, false));
+        }
 	}
 
 	@Override
@@ -237,7 +236,7 @@ public class BasaltGiantEntity extends CreatureEntity implements IEntityAddition
 	// EXP POINTS
 	@Override
 	protected int getExperiencePoints(PlayerEntity player) {
-		return 2 + this.world.rand.nextInt(2);
+		return 73;
 	}
 
 	// SOUNDS

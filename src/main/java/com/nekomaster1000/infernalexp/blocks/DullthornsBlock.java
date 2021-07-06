@@ -4,6 +4,8 @@ import com.nekomaster1000.infernalexp.entities.BlindsightEntity;
 import com.nekomaster1000.infernalexp.init.IEBlocks;
 import com.nekomaster1000.infernalexp.init.IEEffects;
 import com.nekomaster1000.infernalexp.init.IEItems;
+import com.nekomaster1000.infernalexp.init.IETags;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -24,12 +26,14 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.IForgeShearable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -40,7 +44,7 @@ public class DullthornsBlock extends BushBlock implements IForgeShearable {
 
     public DullthornsBlock(Properties properties) {
         super(properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(AGE, Integer.valueOf(0)));
+        this.setDefaultState(this.getDefaultState().with(AGE, Integer.valueOf(0)));
     }
 
     @Override
@@ -51,27 +55,12 @@ public class DullthornsBlock extends BushBlock implements IForgeShearable {
     @Nonnull
     @Override
     public List<ItemStack> onSheared(@Nullable PlayerEntity player, @Nonnull ItemStack item, World world, BlockPos pos, int fortune) {
-        return new ArrayList<>(Collections.singleton(new ItemStack(IEItems.DULLTHORNS.get())));
+        return Arrays.asList(new ItemStack(IEItems.DULLTHORNS.get()));
     }
 
     @Override
     protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
-        return
-			state.matchesBlock(IEBlocks.GLOWDUST_SAND.get()) || state.matchesBlock(Blocks.SAND) || state.matchesBlock(Blocks.RED_SAND) ||
-
-                state.matchesBlock(Blocks.GRASS_BLOCK) || state.matchesBlock(Blocks.DIRT) ||
-                state.matchesBlock(Blocks.COARSE_DIRT) || state.matchesBlock(Blocks.FARMLAND) ||
-				state.matchesBlock(Blocks.PODZOL) || state.matchesBlock(Blocks.MYCELIUM) ||
-
-				state.matchesBlock(Blocks.CRIMSON_NYLIUM) || state.matchesBlock(Blocks.WARPED_NYLIUM) ||
-
-				state.matchesBlock(Blocks.SOUL_SAND) || state.matchesBlock(Blocks.SOUL_SOIL) ||
-
-				state.matchesBlock(Blocks.GLOWSTONE) || state.matchesBlock(IEBlocks.DIMSTONE.get()) ||
-				state.matchesBlock(IEBlocks.DULLSTONE.get()) ||
-
-                state.matchesBlock(IEBlocks.DULLTHORNS.get())
-			;
+        return state.isIn(IETags.Blocks.DULLTHORNS_GROUND);
     }
 
     @Override
@@ -86,25 +75,27 @@ public class DullthornsBlock extends BushBlock implements IForgeShearable {
     /**
      * Performs a random tick on a block.
      */
-    //I have no idea what overriding does LOL - Neko
+
     @Override
     public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
         BlockPos blockpos = pos.up();
         if (worldIn.isAirBlock(blockpos)) {
             int i;
-			for (i = 1; worldIn.getBlockState(pos.down(i)).matchesBlock(this); ++i) {
-			}
+            i = 1;
+            while (worldIn.getBlockState(pos.down(i)).matchesBlock(this)) {
+                ++i;
+            }
 
             if (i < 9) {
                 int j = state.get(AGE);
                 if(net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, blockpos, state, true)) {
                     if (j == 15) {
                         worldIn.setBlockState(blockpos, this.getDefaultState());
-                        BlockState blockstate = state.with(AGE, Integer.valueOf(0));
+                        BlockState blockstate = state.with(AGE, 0);
                         worldIn.setBlockState(pos, blockstate, 4);
                         blockstate.neighborChanged(worldIn, blockpos, this, pos, false);
                     } else {
-                        worldIn.setBlockState(pos, state.with(AGE, Integer.valueOf(j + 1)), 4);
+                        worldIn.setBlockState(pos, state.with(AGE, j + 1), 4);
                     }
                     net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state);
                 }

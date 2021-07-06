@@ -1,12 +1,13 @@
 package com.nekomaster1000.infernalexp.world.biome.netherbiomes;
 
-import com.nekomaster1000.infernalexp.init.IEEntityTypes;
+import com.nekomaster1000.infernalexp.init.IEConfiguredFeatures;
 import com.nekomaster1000.infernalexp.init.IESurfaceBuilders;
 import com.nekomaster1000.infernalexp.world.biome.BiomeHelper;
 import com.nekomaster1000.infernalexp.world.biome.ModBiome;
 
 import net.minecraft.client.audio.BackgroundMusicTracks;
 import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.biome.Biome;
@@ -37,7 +38,7 @@ public class DeltaShoresSubBiome extends ModBiome {
 
     @Override
     protected float configureScale() {
-        return 0.2f;
+        return 0.1f;
     }
 
     @Override
@@ -78,13 +79,13 @@ public class DeltaShoresSubBiome extends ModBiome {
         generation.withFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Features.SMALL_BASALT_COLUMNS);
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.SPRING_LAVA);
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.SPRING_LAVA_DOUBLE);
-        //generation.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, IEConfiguredFeatures.SHORES_RUBBLE_ORE);
         generation.withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.PATCH_FIRE);
         generation.withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.PATCH_SOUL_FIRE);
         generation.withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.GLOWSTONE);
         generation.withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.GLOWSTONE_EXTRA);
         generation.withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.ORE_MAGMA);
         generation.withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.SPRING_CLOSED_DOUBLE);
+        generation.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, IEConfiguredFeatures.ORE_BASALT_IRON_DELTA_SHORES);
 
  /*
  DELTA = register("delta", Feature.DELTA_FEATURE.withConfiguration(new BasaltDeltasFeature(Features.States.LAVA_BLOCK, Features.States.MAGMA_BLOCK,
@@ -102,6 +103,7 @@ public class DeltaShoresSubBiome extends ModBiome {
 
     @Override
     protected void configureSpawns(MobSpawnInfo.Builder spawns) {
-        spawns.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(IEEntityTypes.GLOWSQUITO.get(), 1, 1, 3));
+//        spawns.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(IEEntityTypes.GLOWSQUITO.get(), 1, 1, 3));
+        spawns.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.STRIDER, 60, 1, 2));
     }
 }

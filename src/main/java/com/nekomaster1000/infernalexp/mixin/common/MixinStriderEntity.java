@@ -2,6 +2,8 @@ package com.nekomaster1000.infernalexp.mixin.common;
 
 import com.nekomaster1000.infernalexp.init.IEItems;
 import com.nekomaster1000.infernalexp.util.IBucketable;
+
+import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IEquipable;
 import net.minecraft.entity.ILivingEntityData;
@@ -22,6 +24,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -78,13 +81,12 @@ public abstract class MixinStriderEntity extends AnimalEntity implements IRideab
         }
     }
 
-    @Inject(method = "onInitialSpawn", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "onInitialSpawn", at = @At("HEAD"), cancellable = true)
     private void IE_onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, ILivingEntityData spawnDataIn, CompoundNBT dataTag, CallbackInfoReturnable<ILivingEntityData> cir) {
-        ILivingEntityData entityData = cir.getReturnValue();
-        if (this.isChild()) {
-            cir.setReturnValue(super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag));
-        } else {
-            cir.setReturnValue(entityData);
+        if (reason == SpawnReason.BUCKET) {
+            spawnDataIn = new AgeableEntity.AgeableData(true);
+            this.setGrowingAge(-24000);
+            cir.setReturnValue(spawnDataIn);
         }
     }
 

@@ -3,8 +3,11 @@ package com.nekomaster1000.infernalexp.init;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.nekomaster1000.infernalexp.InfernalExpansion;
+import com.nekomaster1000.infernalexp.world.gen.structures.BastionOutpostStructure;
 import com.nekomaster1000.infernalexp.world.gen.structures.GlowstoneCanyonRuinStructure;
 import com.nekomaster1000.infernalexp.world.gen.structures.IEStructure;
+import com.nekomaster1000.infernalexp.world.gen.structures.SoulSandValleyRuinStructure;
+import com.nekomaster1000.infernalexp.world.gen.structures.StriderAltarStructure;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
@@ -23,7 +26,11 @@ public class IEStructures {
 
 	public static List<IEStructure<?>> structures = new ArrayList<>();
 
+
 	public static final IEStructure<NoFeatureConfig> GLOWSTONE_CANYON_RUIN = registerStructure("glowstone_canyon_ruin", new GlowstoneCanyonRuinStructure(NoFeatureConfig.CODEC));
+	public static final IEStructure<NoFeatureConfig> BASTION_OUTPOST = registerStructure("bastion_outpost", new BastionOutpostStructure(NoFeatureConfig.CODEC));
+	public static final IEStructure<NoFeatureConfig> SOUL_SAND_VALLEY_RUIN = registerStructure("soul_sand_valley_ruin", new SoulSandValleyRuinStructure(NoFeatureConfig.CODEC));
+    public static final IEStructure<NoFeatureConfig> STRIDER_ALTAR = registerStructure("strider_altar", new StriderAltarStructure(NoFeatureConfig.CODEC));
 
 	public static <C extends IFeatureConfig, F extends IEStructure<C>> F registerStructure(String registryName, F structure) {
 		ResourceLocation resourceLocation = new ResourceLocation(InfernalExpansion.MOD_ID, registryName);

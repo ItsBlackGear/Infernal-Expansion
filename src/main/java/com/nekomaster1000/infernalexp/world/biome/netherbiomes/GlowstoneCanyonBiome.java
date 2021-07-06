@@ -10,6 +10,8 @@ import com.nekomaster1000.infernalexp.world.biome.BiomeHelper;
 import com.nekomaster1000.infernalexp.world.biome.ModBiome;
 
 import net.minecraft.client.audio.BackgroundMusicTracks;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeAmbience;
@@ -72,6 +74,7 @@ public class GlowstoneCanyonBiome extends ModBiome {
         generation.withStructure(StructureFeatures.RUINED_PORTAL_NETHER);
         generation.withStructure(StructureFeatures.FORTRESS);
         generation.withStructure(IEConfiguredStructures.GLOWSTONE_CANYON_RUIN);
+        generation.withStructure(IEConfiguredStructures.BASTION_OUTPOST);
 		generation.withCarver(GenerationStage.Carving.AIR, ConfiguredCarvers.NETHER_CAVE);
         //generation.withFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Features.DELTA);
         generation.withCarver(GenerationStage.Carving.AIR, IECarvers.CONFIGURED_GLOWSTONE_RAVINE);
@@ -87,9 +90,8 @@ public class GlowstoneCanyonBiome extends ModBiome {
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.SPRING_LAVA_DOUBLE);
         generation.withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, IEConfiguredFeatures.GSC_SPRING_OPEN);
         generation.withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, IEConfiguredFeatures.GSC_SPRING_CLOSED);
-        //generation.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES,IEConfiguredFeatures.CANYON_BLACKSTONE_ORE);
-        //generation.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES,IEConfiguredFeatures.CANYON_CRUMBLING_BLACKSTONE_ORE);
-//        generation.withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.BLACKSTONE_BLOBS);
+        generation.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES,IEConfiguredFeatures.CANYON_BLACKSTONE_BLOBS);
+        generation.withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.BLACKSTONE_BLOBS);
         generation.withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.PATCH_FIRE);
         generation.withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.PATCH_SOUL_FIRE);
         generation.withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.GLOWSTONE);
@@ -98,6 +100,7 @@ public class GlowstoneCanyonBiome extends ModBiome {
         generation.withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.SPRING_CLOSED_DOUBLE);
         generation.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, IEConfiguredFeatures.ORE_GLOWSILK_COCOON);
         generation.withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, IEConfiguredFeatures.PATCH_GLOW_FIRE);
+        generation.withFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, IEConfiguredFeatures.GLOWDUST_LAYER);
 
         DefaultBiomeFeatures.withCommonNetherBlocks(generation);
     }
@@ -106,6 +109,7 @@ public class GlowstoneCanyonBiome extends ModBiome {
     protected void configureSpawns(MobSpawnInfo.Builder spawns) {
 //        spawns.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(IEEntityTypes.GLOWSQUITO.get(), 80, 1, 3));
 //        spawns.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(IEEntityTypes.BLINDSIGHT.get(), 10, 1, 1));
+        spawns.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.STRIDER, 60, 1, 2));
 
         //It doesn't work properly. Glowsquitos don't spawn at all and Blindsights spawn en-masse regardless of if
         // they're set to 1 or 100. Putting spawning for new biomes back in IEEvents for now.

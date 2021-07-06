@@ -11,13 +11,16 @@
     "common.MixinAbstractArrowEntity",
     "common.MixinAbstractFireBlock",
     "common.MixinArrowEntity",
+    "common.MixinBubbleColumnBlock",
+    "common.MixinDimensionGeneratorSettings",
     "common.MixinDimensionType",
     "common.MixinEntity",
     "common.MixinMagmaCubeEntity",
-    "common.MixinNoiseChunkGenerator",
     "common.MixinPaintingEntity",
+    "common.MixinShearsItem",
+    "common.MixinShovelItem",
     "common.MixinStriderEntity",
-    "common.MixinSurfaceBuilder"
+    "common.WorldCarverAccessor"
   ],
   "client": [
     "client.MixinClientPlayNetHandler",
@@ -26,6 +29,7 @@
     "client.MixinModelBakery",
     "client.MixinOverlayRenderer",
     "client.MixinPaintingSpriteUploader",
-    "client.MixinPlayerRenderer"
+    "client.MixinPlayerRenderer",
+    "client.MixinItemModelsProperties"
   ]
 }

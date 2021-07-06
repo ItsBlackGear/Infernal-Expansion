@@ -7,6 +7,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.NetherRootsBlock;
 import net.minecraft.block.NetherSproutsBlock;
 import net.minecraft.block.TallGrassBlock;
+import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.AttachFace;
 import net.minecraft.util.Direction;
@@ -27,17 +29,12 @@ public class BuriedBoneBlock extends HorizontalBushBlock {
 
     public BuriedBoneBlock(Properties properties) {
         super(properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(FACE, AttachFace.FLOOR));
+        this.setDefaultState(this.getDefaultState().with(FACE, AttachFace.FLOOR));
     }
 
     @CheckForNull
     public BlockState getPlaceableState(World world, BlockPos pos, Direction placeSide) {
-        if ((world.isAirBlock(pos) ||
-                world.getBlockState(pos).getBlock() instanceof TallGrassBlock ||
-                world.getBlockState(pos).getBlock() instanceof NetherRootsBlock ||
-                world.getBlockState(pos).getBlock() instanceof NetherSproutsBlock ||
-                !world.getBlockState(pos).getFluidState().isEmpty()) &&
-                world.getBlockState(pos).getBlock() != IEBlocks.BURIED_BONE.get()) {
+        if (world.getBlockState(pos).getMaterial().isReplaceable() && world.getBlockState(pos).getBlock() != IEBlocks.BURIED_BONE.get()) {
             if (placeSide.getAxis() != Axis.Y) {
                 placeSide = Direction.UP;
             }
@@ -112,5 +109,10 @@ public class BuriedBoneBlock extends HorizontalBushBlock {
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builderIn) {
         builderIn.add(HORIZONTAL_FACING, FACE);
+    }
+
+    @Override
+    public Item asItem() {
+        return Items.BONE;
     }
 }

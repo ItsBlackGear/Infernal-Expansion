@@ -4,11 +4,13 @@ import com.nekomaster1000.infernalexp.access.AbstractArrowEntityAccess;
 import com.nekomaster1000.infernalexp.init.IEEffects;
 import com.nekomaster1000.infernalexp.init.IEParticleTypes;
 import com.nekomaster1000.infernalexp.init.IEPotions;
+
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.Potions;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -34,10 +36,8 @@ public abstract class MixinArrowEntity {
 	private void setPotionEffectInfernalExpansion(ItemStack stack, CallbackInfo ci) {
 		if (this.potion == IEPotions.INFECTION.get() || this.potion == IEPotions.LONG_INFECTION.get() || this.potion == IEPotions.STRONG_INFECTION.get()) {
 			((AbstractArrowEntityAccess) this).setInfection(true);
-			this.potion = Potions.EMPTY;
 		} else if (this.potion == IEPotions.LUMINOUS.get() || this.potion == IEPotions.LONG_LUMINOUS.get() || this.potion == IEPotions.STRONG_LUMINOUS.get()) {
 			((AbstractArrowEntityAccess) this).setLuminous(true);
-			this.potion = Potions.EMPTY;
 		}
 		this.refreshColor();
 	}
@@ -47,11 +47,8 @@ public abstract class MixinArrowEntity {
 		for (EffectInstance effectInstance : this.customPotionEffects) {
 			if (effectInstance.getPotion() == IEEffects.INFECTION.get()) {
 				((AbstractArrowEntityAccess) this).setInfection(true);
-				this.customPotionEffects.remove(effectInstance);
-
 			} else if (effectInstance.getPotion() == IEEffects.LUMINOUS.get()) {
 				((AbstractArrowEntityAccess) this).setLuminous(true);
-				this.customPotionEffects.remove(effectInstance);
 			}
 		}
 		this.refreshColor();
@@ -74,4 +71,11 @@ public abstract class MixinArrowEntity {
 			}
 		}
 	}
+
+	@Inject(at = @At("RETURN"), method = "arrowHit")
+    private void onArrowHitInfernalExpansion(LivingEntity living, CallbackInfo ci) {
+	    if (((AbstractArrowEntityAccess) this).getLuminous()) {
+	        living.addPotionEffect(new EffectInstance(IEEffects.LUMINOUS.get(), 3600));
+        }
+    }
 }

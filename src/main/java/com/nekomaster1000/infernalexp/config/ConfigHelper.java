@@ -1,9 +1,10 @@
 package com.nekomaster1000.infernalexp.config;
 
-import com.nekomaster1000.infernalexp.config.InfernalExpansionConfig.FloraBehaviour;
+import com.nekomaster1000.infernalexp.config.InfernalExpansionConfig.ClientConfig;
+import com.nekomaster1000.infernalexp.config.InfernalExpansionConfig.Miscellaneous;
 import com.nekomaster1000.infernalexp.config.InfernalExpansionConfig.MobInteractions;
 import com.nekomaster1000.infernalexp.config.InfernalExpansionConfig.MobSpawning;
-import com.nekomaster1000.infernalexp.config.InfernalExpansionConfig.ClientConfig;
+
 import net.minecraftforge.fml.config.ModConfig;
 
 import javax.annotation.Nullable;
@@ -21,6 +22,7 @@ public final class ConfigHelper {
         //Mob Interactions
         MobInteractions.PIGLIN_FEAR_WARPBEETLE.setBoolean(ConfigHolder.COMMON.piglinFearWarpbeetle.get());
         MobInteractions.PIGLIN_FEAR_EMBODY.setBoolean(ConfigHolder.COMMON.piglinFearEmbody.get());
+        MobInteractions.PIGLIN_FEAR_DWARF.setBoolean(ConfigHolder.COMMON.piglinFearDwarf.get());
         MobInteractions.HOGLIN_FEAR_WARPBEETLE.setBoolean(ConfigHolder.COMMON.hoglinFearWarpbeetle.get());
         MobInteractions.HOGLIN_FEAR_EMBODY.setBoolean(ConfigHolder.COMMON.hoglinFearEmbody.get());
         MobInteractions.SPIDER_ATTACK_WARPBEETLE.setBoolean(ConfigHolder.COMMON.spiderAttackWarpbeetle.get());
@@ -35,35 +37,45 @@ public final class ConfigHelper {
         MobInteractions.GHAST_ATTACK_EMBODY.setBoolean(ConfigHolder.COMMON.ghastAttackEmbody.get());
         MobInteractions.GHAST_ATTACK_VOLINE.setBoolean(ConfigHolder.COMMON.ghastAttackVoline.get());
         MobInteractions.GHAST_ATTACK_SKELETON.setBoolean(ConfigHolder.COMMON.ghastAttackSkeleton.get());
+        MobInteractions.GHAST_ATTACK_GLOWSQUITO.setBoolean(ConfigHolder.COMMON.ghastAttackGlowsquito.get());
+        MobInteractions.GLOWSQUITO_ATTACK_DWARF.setBoolean(ConfigHolder.COMMON.glowsquitoAttackDwarf.get());
+        MobInteractions.GLOWSQUITO_ATTACK_LUMINOUS.setBoolean(ConfigHolder.COMMON.glowsquitoAttackLuminous.get());
+        MobInteractions.DWARF_ATTACK_PIGLIN.setBoolean(ConfigHolder.COMMON.dwarfAttackPiglin.get());
+        MobInteractions.DWARF_ATTACK_ZOMBIE_PIGLIN.setBoolean(ConfigHolder.COMMON.dwarfAttackZombiePiglin.get());
+        MobInteractions.DWARF_ATTACK_PLAYER.setBoolean(ConfigHolder.COMMON.dwarfAttackPlayer.get());
+        MobInteractions.BLINDSIGHT_ATTACK_GLOWSQUITO.setBoolean(ConfigHolder.COMMON.blindsightAttackGlowsquito.get());
+        MobInteractions.BLINDSIGHT_ATTACK_PLAYER.setBoolean(ConfigHolder.COMMON.blindsightAttackPlayer.get());
+        MobInteractions.GIANT_ATTACK_MAGMA_CUBE.setBoolean(ConfigHolder.COMMON.giantAttackMagmaCube.get());
+        MobInteractions.EMBODY_ATTACK_PIGLIN.setBoolean(ConfigHolder.COMMON.embodyAttackPiglin.get());
+        MobInteractions.EMBODY_ATTACK_PLAYER.setBoolean(ConfigHolder.COMMON.embodyAttackPlayer.get());
+        MobInteractions.VOLINE_ATTACK_FIRE_RESISTANCE.setBoolean(ConfigHolder.COMMON.volineAttackFireResistance.get());
+        MobInteractions.VOLINE_ATTACK_PLAYER.setBoolean(ConfigHolder.COMMON.volineAttackPlayer.get());
+        MobInteractions.VOLINE_ATTACK_MAGMA_CUBE.setBoolean(ConfigHolder.COMMON.volineAttackMagmaCube.get());
         MobInteractions.GLOWSILK_SPEED.setDouble(ConfigHolder.COMMON.glowsilkSpeed.get());
 
-        //Mob Spawning Booleans
-        MobSpawning.VOLINE_WASTES.setEnabled(ConfigHolder.COMMON.volineInWastes.get());
-        MobSpawning.SHROOMLOIN_CRIMSON.setEnabled(ConfigHolder.COMMON.shroomloinInCrimson.get());
-        MobSpawning.VOLINE_CRIMSON.setEnabled(ConfigHolder.COMMON.volineInCrimson.get());
-        MobSpawning.WARPBEETLE_WARPED.setEnabled(ConfigHolder.COMMON.warpbeetleInWarped.get());
-        MobSpawning.GIANT_DELTAS.setEnabled(ConfigHolder.COMMON.giantInDeltas.get());
-        MobSpawning.EMBODY_SSV.setEnabled(ConfigHolder.COMMON.embodyInSSV.get());
-        MobSpawning.GLOWSILK_GSC.setEnabled(ConfigHolder.COMMON.glowsilkInGSC.get());
-        MobSpawning.GLOWSILK_DELTAS.setEnabled(ConfigHolder.COMMON.glowsilkInDeltas.get());
-        MobSpawning.GLOWSILK_CRIMSON.setEnabled(ConfigHolder.COMMON.glowsilkInCrimson.get());
-
-        //Mob Spawn Rates
-        MobSpawning.VOLINE_WASTES.setSpawnrate(ConfigHolder.COMMON.volineWastesRate.get());
-        MobSpawning.SHROOMLOIN_CRIMSON.setSpawnrate(ConfigHolder.COMMON.shroomloinCrimsonRate.get());
-        MobSpawning.VOLINE_CRIMSON.setSpawnrate(ConfigHolder.COMMON.volineCrimsonRate.get());
-        MobSpawning.WARPBEETLE_WARPED.setSpawnrate(ConfigHolder.COMMON.warpbeetleWarpedRate.get());
-        MobSpawning.GIANT_DELTAS.setSpawnrate(ConfigHolder.COMMON.giantDeltasRate.get());
-        MobSpawning.EMBODY_SSV.setSpawnrate(ConfigHolder.COMMON.embodySSVRate.get());
-        MobSpawning.GLOWSILK_GSC.setSpawnrate(ConfigHolder.COMMON.glowsilkGSCRate.get());
-        MobSpawning.GLOWSILK_DELTAS.setSpawnrate(ConfigHolder.COMMON.glowsilkDeltasRate.get());
-        MobSpawning.GLOWSILK_CRIMSON.setSpawnrate(ConfigHolder.COMMON.glowsilkCrimsonRate.get());
+        //Mob Spawnable Biomes
+        InfernalExpansionConfig.MobSpawning.VOLINE.setSpawnableBiomes(ConfigHolder.COMMON.volineBiomes.get());
+        MobSpawning.WARPBEETLE.setSpawnableBiomes(ConfigHolder.COMMON.warpbeetleBiomes.get());
+        InfernalExpansionConfig.MobSpawning.SHROOMLOIN.setSpawnableBiomes(ConfigHolder.COMMON.shroomloinBiomes.get());
+        InfernalExpansionConfig.MobSpawning.BASALT_GIANT.setSpawnableBiomes(ConfigHolder.COMMON.basaltGiantBiomes.get());
+        InfernalExpansionConfig.MobSpawning.EMBODY.setSpawnableBiomes(ConfigHolder.COMMON.embodyBiomes.get());
+        MobSpawning.GLOWSQUITO.setSpawnableBiomes(ConfigHolder.COMMON.glowsquitoBiomes.get());
+        InfernalExpansionConfig.MobSpawning.GLOWSILK_MOTH.setSpawnableBiomes(ConfigHolder.COMMON.glowsilkMothBiomes.get());
+        MobSpawning.BLINDSIGHT.setSpawnableBiomes(ConfigHolder.COMMON.blindsightBiomes.get());
+        MobSpawning.BLACKSTONE_DWARF.setSpawnableBiomes(ConfigHolder.COMMON.blackstoneDwarfBiomes.get());
 
         //Bonemeal Behaviour
-        FloraBehaviour.SHROOMLIGHT_GROWABLE.set(ConfigHolder.COMMON.isShroomlightGrowable.get());
-        FloraBehaviour.SHROOMLIGHT_GROW_CHANCE.set(ConfigHolder.COMMON.shroomlightGrowChance.get());
+        Miscellaneous.SHROOMLIGHT_GROWABLE.set(ConfigHolder.COMMON.isShroomlightGrowable.get());
+        Miscellaneous.SHROOMLIGHT_GROW_CHANCE.set(ConfigHolder.COMMON.shroomlightGrowChance.get());
 
-        FloraBehaviour.LUMINOUS_FUNGUS_ACTIVATE_DISTANCE.set(ConfigHolder.COMMON.luminousFungusActivateDistance.get());
+        //Miscellaneous
+        Miscellaneous.FIRE_CHARGE_EXPLOSION.set(ConfigHolder.COMMON.fireChargeExplosion.get());
+        Miscellaneous.JERKY_EFFECT_DURATION.set(ConfigHolder.COMMON.jerkyEffectDuration.get());
+        Miscellaneous.JERKY_EFFECT_AMPLIFIER.set(ConfigHolder.COMMON.jerkyEffectAmplifier.get());
+
+        Miscellaneous.LUMINOUS_FUNGUS_ACTIVATE_DISTANCE.set(ConfigHolder.COMMON.luminousFungusActivateDistance.get());
+
+        Miscellaneous.LUMINOUS_FUNGUS_GIVES_EFFECT.set(ConfigHolder.COMMON.luminousFungusGivesEffect.get());
     }
 
     public static void saveToClient() {
@@ -74,6 +86,7 @@ public final class ConfigHelper {
         //Mob Interactions
         ConfigHolder.COMMON.piglinFearWarpbeetle.set(MobInteractions.PIGLIN_FEAR_WARPBEETLE.getBoolean());
         ConfigHolder.COMMON.piglinFearEmbody.set(MobInteractions.PIGLIN_FEAR_EMBODY.getBoolean());
+        ConfigHolder.COMMON.piglinFearDwarf.set(MobInteractions.PIGLIN_FEAR_DWARF.getBoolean());
         ConfigHolder.COMMON.hoglinFearWarpbeetle.set(MobInteractions.HOGLIN_FEAR_WARPBEETLE.getBoolean());
         ConfigHolder.COMMON.hoglinFearEmbody.set(MobInteractions.HOGLIN_FEAR_EMBODY.getBoolean());
         ConfigHolder.COMMON.spiderAttackWarpbeetle.set(MobInteractions.SPIDER_ATTACK_WARPBEETLE.getBoolean());
@@ -88,34 +101,43 @@ public final class ConfigHelper {
         ConfigHolder.COMMON.ghastAttackEmbody.set(MobInteractions.GHAST_ATTACK_EMBODY.getBoolean());
         ConfigHolder.COMMON.ghastAttackVoline.set(MobInteractions.GHAST_ATTACK_VOLINE.getBoolean());
         ConfigHolder.COMMON.ghastAttackSkeleton.set(MobInteractions.GHAST_ATTACK_SKELETON.getBoolean());
+        ConfigHolder.COMMON.ghastAttackGlowsquito.set(MobInteractions.GHAST_ATTACK_GLOWSQUITO.getBoolean());
+        ConfigHolder.COMMON.glowsquitoAttackDwarf.set(MobInteractions.GLOWSQUITO_ATTACK_DWARF.getBoolean());
+        ConfigHolder.COMMON.glowsquitoAttackLuminous.set(MobInteractions.GLOWSQUITO_ATTACK_LUMINOUS.getBoolean());
+        ConfigHolder.COMMON.dwarfAttackPiglin.set(MobInteractions.DWARF_ATTACK_PIGLIN.getBoolean());
+        ConfigHolder.COMMON.dwarfAttackZombiePiglin.set(MobInteractions.DWARF_ATTACK_ZOMBIE_PIGLIN.getBoolean());
+        ConfigHolder.COMMON.dwarfAttackPlayer.set(MobInteractions.DWARF_ATTACK_PLAYER.getBoolean());
+        ConfigHolder.COMMON.blindsightAttackGlowsquito.set(MobInteractions.BLINDSIGHT_ATTACK_GLOWSQUITO.getBoolean());
+        ConfigHolder.COMMON.blindsightAttackPlayer.set(MobInteractions.BLINDSIGHT_ATTACK_PLAYER.getBoolean());
+        ConfigHolder.COMMON.giantAttackMagmaCube.set(MobInteractions.GIANT_ATTACK_MAGMA_CUBE.getBoolean());
+        ConfigHolder.COMMON.embodyAttackPiglin.set(MobInteractions.EMBODY_ATTACK_PIGLIN.getBoolean());
+        ConfigHolder.COMMON.embodyAttackPlayer.set(MobInteractions.EMBODY_ATTACK_PLAYER.getBoolean());
+        ConfigHolder.COMMON.volineAttackFireResistance.set(MobInteractions.VOLINE_ATTACK_FIRE_RESISTANCE.getBoolean());
+        ConfigHolder.COMMON.volineAttackPlayer.set(MobInteractions.VOLINE_ATTACK_PLAYER.getBoolean());
+        ConfigHolder.COMMON.volineAttackMagmaCube.set(MobInteractions.VOLINE_ATTACK_MAGMA_CUBE.getBoolean());
         ConfigHolder.COMMON.glowsilkSpeed.set(MobInteractions.GLOWSILK_SPEED.getDouble());
 
-        //Mob Spawning Booleans
-        ConfigHolder.COMMON.volineInWastes.set(MobSpawning.VOLINE_WASTES.isEnabled());
-        ConfigHolder.COMMON.shroomloinInCrimson.set(MobSpawning.SHROOMLOIN_CRIMSON.isEnabled());
-        ConfigHolder.COMMON.volineInCrimson.set(MobSpawning.VOLINE_CRIMSON.isEnabled());
-        ConfigHolder.COMMON.warpbeetleInWarped.set(MobSpawning.WARPBEETLE_WARPED.isEnabled());
-        ConfigHolder.COMMON.giantInDeltas.set(MobSpawning.GIANT_DELTAS.isEnabled());
-        ConfigHolder.COMMON.embodyInSSV.set(MobSpawning.EMBODY_SSV.isEnabled());
-		ConfigHolder.COMMON.glowsilkInGSC.set(MobSpawning.GLOWSILK_GSC.isEnabled());
-		ConfigHolder.COMMON.glowsilkInDeltas.set(MobSpawning.GLOWSILK_DELTAS.isEnabled());
-		ConfigHolder.COMMON.glowsilkInCrimson.set(MobSpawning.GLOWSILK_CRIMSON.isEnabled());
+        //Mob Spawnable Biomes
+        ConfigHolder.COMMON.volineBiomes.set(MobSpawning.VOLINE.getSpawnableBiomes());
+        ConfigHolder.COMMON.warpbeetleBiomes.set(InfernalExpansionConfig.MobSpawning.WARPBEETLE.getSpawnableBiomes());
+        ConfigHolder.COMMON.shroomloinBiomes.set(InfernalExpansionConfig.MobSpawning.SHROOMLOIN.getSpawnableBiomes());
+        ConfigHolder.COMMON.basaltGiantBiomes.set(InfernalExpansionConfig.MobSpawning.BASALT_GIANT.getSpawnableBiomes());
+        ConfigHolder.COMMON.embodyBiomes.set(InfernalExpansionConfig.MobSpawning.EMBODY.getSpawnableBiomes());
+        ConfigHolder.COMMON.glowsquitoBiomes.set(InfernalExpansionConfig.MobSpawning.GLOWSQUITO.getSpawnableBiomes());
+        ConfigHolder.COMMON.glowsilkMothBiomes.set(InfernalExpansionConfig.MobSpawning.GLOWSILK_MOTH.getSpawnableBiomes());
+        ConfigHolder.COMMON.blindsightBiomes.set(InfernalExpansionConfig.MobSpawning.BLINDSIGHT.getSpawnableBiomes());
+        ConfigHolder.COMMON.blackstoneDwarfBiomes.set(MobSpawning.BLACKSTONE_DWARF.getSpawnableBiomes());
 
-        //Mob Spawn Rates
-        ConfigHolder.COMMON.volineWastesRate.set(MobSpawning.VOLINE_WASTES.getSpawnrate());
-        ConfigHolder.COMMON.shroomloinCrimsonRate.set(MobSpawning.SHROOMLOIN_CRIMSON.getSpawnrate());
-        ConfigHolder.COMMON.volineCrimsonRate.set(MobSpawning.VOLINE_CRIMSON.getSpawnrate());
-        ConfigHolder.COMMON.warpbeetleWarpedRate.set(MobSpawning.WARPBEETLE_WARPED.getSpawnrate());
-        ConfigHolder.COMMON.giantDeltasRate.set(MobSpawning.GIANT_DELTAS.getSpawnrate());
-        ConfigHolder.COMMON.embodySSVRate.set(MobSpawning.EMBODY_SSV.getSpawnrate());
-		ConfigHolder.COMMON.glowsilkGSCRate.set(MobSpawning.GLOWSILK_GSC.getSpawnrate());
-		ConfigHolder.COMMON.glowsilkDeltasRate.set(MobSpawning.GLOWSILK_DELTAS.getSpawnrate());
-		ConfigHolder.COMMON.glowsilkCrimsonRate.set(MobSpawning.GLOWSILK_CRIMSON.getSpawnrate());
+        ConfigHolder.COMMON.isShroomlightGrowable.set(Miscellaneous.SHROOMLIGHT_GROWABLE.getBool());
+        ConfigHolder.COMMON.shroomlightGrowChance.set(Miscellaneous.SHROOMLIGHT_GROW_CHANCE.getDouble());
 
-        ConfigHolder.COMMON.isShroomlightGrowable.set(FloraBehaviour.SHROOMLIGHT_GROWABLE.getBool());
-        ConfigHolder.COMMON.shroomlightGrowChance.set(FloraBehaviour.SHROOMLIGHT_GROW_CHANCE.getDouble());
+        ConfigHolder.COMMON.fireChargeExplosion.set(Miscellaneous.FIRE_CHARGE_EXPLOSION.getBool());
+        ConfigHolder.COMMON.jerkyEffectDuration.set(Miscellaneous.JERKY_EFFECT_DURATION.getInt());
+        ConfigHolder.COMMON.jerkyEffectAmplifier.set(Miscellaneous.JERKY_EFFECT_AMPLIFIER.getInt());
 
-        ConfigHolder.COMMON.luminousFungusActivateDistance.set(FloraBehaviour.LUMINOUS_FUNGUS_ACTIVATE_DISTANCE.getDouble());
+        ConfigHolder.COMMON.luminousFungusActivateDistance.set(Miscellaneous.LUMINOUS_FUNGUS_ACTIVATE_DISTANCE.getDouble());
+
+        ConfigHolder.COMMON.luminousFungusGivesEffect.set(Miscellaneous.LUMINOUS_FUNGUS_GIVES_EFFECT.getBool());
 
         ConfigHolder.COMMON_SPEC.save();
     }

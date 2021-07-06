@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "xx",
+    "xx"
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "minecraft:warped_fungus"
+    }
+  },
+  "result":
+  {
+    "item": "infernalexp:warped_fungus_cap",
+    "count": 1
+  }
+}

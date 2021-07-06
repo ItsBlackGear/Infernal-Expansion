@@ -2,7 +2,10 @@ package com.nekomaster1000.infernalexp.mixin.common;
 
 import com.nekomaster1000.infernalexp.init.IEItems;
 import com.nekomaster1000.infernalexp.util.IBucketable;
+
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.monster.MagmaCubeEntity;
 import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,8 +18,12 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+
+import javax.annotation.Nullable;
 
 @Mixin(MagmaCubeEntity.class)
 public abstract class MixinMagmaCubeEntity extends SlimeEntity implements IBucketable {
@@ -60,6 +67,17 @@ public abstract class MixinMagmaCubeEntity extends SlimeEntity implements IBucke
             return IBucketable.tryBucketEntity(playerIn, hand, this).orElse(super.getEntityInteractionResult(playerIn, hand));
         } else {
             return super.getEntityInteractionResult(playerIn, hand);
+        }
+    }
+
+    @Nullable
+    @Override
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+        if (reason == SpawnReason.BUCKET) {
+            return spawnDataIn;
+        } else {
+            this.setSlimeSize(0, false);
+            return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
         }
     }
 

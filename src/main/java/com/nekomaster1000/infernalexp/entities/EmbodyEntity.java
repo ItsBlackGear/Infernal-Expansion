@@ -54,16 +54,19 @@ public class EmbodyEntity extends MonsterEntity {
 	protected void registerGoals() {
 		super.registerGoals();
 		this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 0.6D, true));
-//        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, SkeletonEntity.class, true, false));
-		if (InfernalExpansionConfig.MobInteractions.SKELETON_ATTACK_EMBODY.getBoolean()) {
-			this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, AbstractSkeletonEntity.class, true, false));
-		}
-		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, AbstractPiglinEntity.class, true, false));
-		this.goalSelector.addGoal(2, new WaterAvoidingRandomWalkingGoal(this, 0.5d));
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomWalkingGoal(this, 0.5d));
 		this.goalSelector.addGoal(2, new LookAtGoal(this, PlayerEntity.class, 8.0f));
 		this.goalSelector.addGoal(3, new LookRandomlyGoal(this));
-	}
+        if (InfernalExpansionConfig.MobInteractions.SKELETON_ATTACK_EMBODY.getBoolean()) {
+            this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, AbstractSkeletonEntity.class, true, false));
+        }
+        if (InfernalExpansionConfig.MobInteractions.EMBODY_ATTACK_PLAYER.getBoolean()) {
+            this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+        }
+        if (InfernalExpansionConfig.MobInteractions.EMBODY_ATTACK_PIGLIN.getBoolean()) {
+            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, AbstractPiglinEntity.class, true, false));
+        }
+    }
 
 	protected double getModifiedMovementSpeed() {
 		// Change the last value in the next line in order to adjust the range of speed
